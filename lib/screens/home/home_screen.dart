@@ -10,9 +10,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       body: Center(
-        child: Text("Hello"),
+        child: Container(
+          width: 150,
+          height: 150,
+          decoration:
+              new BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+        ),
       ),
     );
   }
