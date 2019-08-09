@@ -1,5 +1,7 @@
+import 'package:dayts/data/activity_repository.dart';
 import 'package:dayts/screens/home/dayts_bloc.dart';
 import 'package:dayts/screens/home/dayts_event.dart';
+import 'package:dayts/screens/home/dayts_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -9,17 +11,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final _bloc = DaytsBloc();
+  final _bloc = DaytsBloc(ActivityRepository());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(
-        child: StreamBuilder(
+        child: StreamBuilder<DaytsState>(
           stream: _bloc.activity,
-          initialData: 0,
-          builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+          initialData: DaytsDataState("Tap"),
+          builder: (BuildContext context, AsyncSnapshot<DaytsState> snapshot) {
             return Container(
               child: GestureDetector(
                 onTap: () => _bloc.daytsEventSink.add(NewActivityEvent()),
@@ -27,7 +29,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 150,
                   height: 150,
                   child: Center(
-                      child: Text(snapshot.data.toString(),
+                      child: Text(
+                          snapshot.data is DaytsLoadingState
+                              ? "Loading"
+                              : (snapshot.data as DaytsDataState).activity,
                           style: TextStyle(fontSize: 20))),
                   decoration: new BoxDecoration(
                       color: Colors.white, shape: BoxShape.circle),
