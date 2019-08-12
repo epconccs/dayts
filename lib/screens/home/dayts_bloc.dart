@@ -22,7 +22,7 @@ class DaytsBloc {
     _inActivity.add(DaytsState.daytsLoading());
     if (event is NewActivityEvent) {
       _repository.getActivity().then((activity) {
-        _inActivity.add(DaytsState.daytsData(activity));
+        _inActivity.add(DaytsState.daytsData(activity.description));
       });
     }
   }

@@ -17,29 +17,26 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Center(
-        child: StreamBuilder<DaytsState>(
-          stream: _bloc.activity,
-          initialData: DaytsDataState("Tap"),
-          builder: (BuildContext context, AsyncSnapshot<DaytsState> snapshot) {
-            return Container(
-              child: GestureDetector(
-                onTap: () => _bloc.daytsEventSink.add(NewActivityEvent()),
-                child: Container(
-                  width: 150,
-                  height: 150,
-                  child: Center(
-                      child: Text(
-                          snapshot.data is DaytsLoadingState
-                              ? "Loading"
-                              : (snapshot.data as DaytsDataState).activity,
-                          style: TextStyle(fontSize: 20))),
-                  decoration: new BoxDecoration(
-                      color: Colors.white, shape: BoxShape.circle),
-                ),
-              ),
-            );
-          },
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: StreamBuilder<DaytsState>(
+            stream: _bloc.activity,
+            initialData: DaytsDataState("Tap"),
+            builder:
+                (BuildContext context, AsyncSnapshot<DaytsState> snapshot) {
+              return Container(
+                  child: GestureDetector(
+                      onTap: () => _bloc.daytsEventSink.add(NewActivityEvent()),
+                      child: snapshot.data is DaytsLoadingState
+                          ? CircularProgressIndicator(
+                              valueColor: new AlwaysStoppedAnimation<Color>(
+                                  Colors.white))
+                          : Text((snapshot.data as DaytsDataState).activity,
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 60))));
+            },
+          ),
         ),
       ),
     );
